@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов\Textures">
+      <UniqueIdentifier>{3d32b4b6-7dfc-498a-ae47-69c935fad305}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\MUSIC">
+      <UniqueIdentifier>{04ca44e9-35fb-416c-8824-5ac26fef542c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="music2.ogg">
+      <Filter>Файлы ресурсов\MUSIC</Filter>
+    </None>
+    <None Include="Hyderabad.ogg">
+      <Filter>Файлы ресурсов\MUSIC</Filter>
+    </None>
+    <None Include="Around_The_World.ogg">
+      <Filter>Файлы ресурсов\MUSIC</Filter>
+    </None>
+    <None Include="marshmello.ogg">
+      <Filter>Файлы ресурсов\MUSIC</Filter>
+    </None>
+    <None Include="jeremy-soule-sunrise-of-flutes.ogg">
+      <Filter>Файлы ресурсов\MUSIC</Filter>
+    </None>
+    <None Include="hit.ogg">
+      <Filter>Файлы ресурсов\MUSIC</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="background.png">
+      <Filter>Файлы ресурсов\Textures</Filter>
+    </Image>
+    <Image Include="ball11.png">
+      <Filter>Файлы ресурсов\Textures</Filter>
+    </Image>
+    <Image Include="music_icon.png">
+      <Filter>Файлы ресурсов\Textures</Filter>
+    </Image>
+    <Image Include="playbutton.png">
+      <Filter>Файлы ресурсов\Textures</Filter>
+    </Image>
+    <Image Include="reset.png">
+      <Filter>Файлы ресурсов\Textures</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="map.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="functions.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="CyrilicOld.TTF">
+      <Filter>Файлы ресурсов\Textures</Filter>
+    </Font>
+  </ItemGroup>
+</Project>
