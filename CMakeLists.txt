@@ -143,13 +143,13 @@ if(SFML_FOUND AND BUILD_GAME)
                         "$<TARGET_FILE_DIR:Game>/openal32.dll"
                 COMMENT "Copy OpenAL runtime next to the executable"
             )
-            install(FILES "${_openal_src}" DESTINATION .)
+            install(FILES "${_openal_src}" DESTINATION . COMPONENT Game)
         endif()
     endif()
 
-    install(TARGETS Game RUNTIME DESTINATION .)
-    install(DIRECTORY "${CMAKE_SOURCE_DIR}/assets/" DESTINATION assets)
-    install(FILES "${CMAKE_SOURCE_DIR}/README.md" DESTINATION .)
+    install(TARGETS Game RUNTIME DESTINATION . COMPONENT Game)
+    install(DIRECTORY "${CMAKE_SOURCE_DIR}/assets/" DESTINATION assets COMPONENT Game)
+    install(FILES "${CMAKE_SOURCE_DIR}/README.md" DESTINATION . COMPONENT Game)
 
     set(CPACK_GENERATOR "ZIP")
     set(CPACK_PACKAGE_NAME "2DGameSFML")

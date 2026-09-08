@@ -107,7 +107,7 @@ jobs:
 
       - name: Package
         run: |
-          cmake --install build --config Release --prefix package
+          cmake --install build --config Release --prefix package --component Game
           cmake -E tar cf 2DGameSFML-windows-x64.zip --format=zip package
 
       - name: Upload portable Windows build
