@@ -1,5 +1,5 @@
 blank_issues_enabled: true
 contact_links:
-  - name: Скачать готовые сборки
+  - name: Download ready builds
     url: https://github.com/M1shut3r/2DGameSFML/releases/latest
-    about: Windows .exe и Linux-пакеты публикуются в Releases, собирать проект вручную не нужно.
+    about: Windows and Linux packages are published on Releases. You do not need to build the project yourself.

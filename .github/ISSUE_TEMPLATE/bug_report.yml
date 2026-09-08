@@ -1,15 +1,15 @@
 name: Bug report
-description: Сообщить о падении, ошибке уровня или проблеме со сборкой
+description: Report a crash, level bug, or build problem
 title: "[Bug] "
 labels: ["bug"]
 body:
   - type: markdown
     attributes:
-      value: Спасибо за отчёт. Чем точнее шаги, тем быстрее получится воспроизвести.
+      value: Thanks for the report. Clear reproduction steps make this much faster to fix.
   - type: dropdown
     id: os
     attributes:
-      label: Операционная система
+      label: Operating system
       options:
         - Windows 10
         - Windows 11
@@ -20,31 +20,31 @@ body:
   - type: input
     id: version
     attributes:
-      label: Версия
-      description: Номер GitHub Release или хеш коммита
-      placeholder: v1.0.0
+      label: Version
+      description: GitHub Release tag or commit hash
+      placeholder: v1.1.0
     validations:
       required: true
   - type: textarea
     id: what-happened
     attributes:
-      label: Что произошло
-      placeholder: Игра закрылась при ударе о лазер на втором уровне.
+      label: What happened
+      placeholder: The game closed after hitting a laser on the second level.
     validations:
       required: true
   - type: textarea
     id: steps
     attributes:
-      label: Как повторить
+      label: Steps to reproduce
       placeholder: |
-        1. Запустить 2DGameSFML.exe
-        2. Пройти обучающий уровень
+        1. Launch 2DGameSFML.exe
+        2. Finish the tutorial level
         3. ...
     validations:
       required: true
   - type: textarea
     id: expected
     attributes:
-      label: Ожидаемое поведение
+      label: Expected behavior
     validations:
       required: true

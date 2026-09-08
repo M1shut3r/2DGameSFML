@@ -1,17 +1,17 @@
-## Что изменилось
+## What changed
 
 -
 
-## Зачем
+## Why
 
 -
 
-## Как проверяли
+## How you tested it
 
-- [ ] Сборка Linux (`cmake --build build`)
-- [ ] Сборка Windows (CI или локально)
-- [ ] Игровой сценарий, которого касаются изменения
+- [ ] Linux build (`cmake --build build`)
+- [ ] Windows build (CI or local)
+- [ ] The gameplay path touched by this change
 
-## Заметки
+## Notes
 
 -
