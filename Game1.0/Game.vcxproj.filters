@@ -72,7 +72,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Font Include="CyrilicOld.TTF">
+    <Font Include="CyrilicOld.ttf">
       <Filter>Файлы ресурсов\Textures</Filter>
     </Font>
   </ItemGroup>

@@ -162,7 +162,7 @@
     <ClInclude Include="map.h" />
   </ItemGroup>
   <ItemGroup>
-    <Font Include="CyrilicOld.TTF" />
+    <Font Include="CyrilicOld.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

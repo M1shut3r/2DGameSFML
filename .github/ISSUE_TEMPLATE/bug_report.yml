@@ -1,0 +1,50 @@
+name: Bug report
+description: Сообщить о падении, ошибке уровня или проблеме со сборкой
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Спасибо за отчёт. Чем точнее шаги, тем быстрее получится воспроизвести.
+  - type: dropdown
+    id: os
+    attributes:
+      label: Операционная система
+      options:
+        - Windows 10
+        - Windows 11
+        - Linux
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Версия
+      description: Номер GitHub Release или хеш коммита
+      placeholder: v1.0.0
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: Что произошло
+      placeholder: Игра закрылась при ударе о лазер на втором уровне.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Как повторить
+      placeholder: |
+        1. Запустить 2DGameSFML.exe
+        2. Пройти обучающий уровень
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Ожидаемое поведение
+    validations:
+      required: true

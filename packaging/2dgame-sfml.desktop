@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=2D Game SFML
+Comment=2D puzzle game built with SFML
+Exec=2DGameSFML
+Icon=2dgame-sfml
+Terminal=false
+Categories=Game;LogicGame;
+StartupNotify=true

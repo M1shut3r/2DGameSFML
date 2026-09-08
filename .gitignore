@@ -1,0 +1,48 @@
+# Build trees
+/build/
+/out/
+/cmake-build-*/
+/AppDir/
+/dist/
+/package/
+CMakeUserPresets.json
+
+# IDE / editor
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.sdf
+*.opensdf
+*.VC.db
+*.VC.opendb
+
+# NuGet / Visual Studio leftovers
+/packages/
+*.ilk
+*.pdb
+*.obj
+*.idb
+*.ipch
+*.tlog
+*.log
+*.lastbuildstate
+
+# Compiled binaries (published via GitHub Releases)
+*.exe
+*.dll
+*.so
+*.so.*
+*.dylib
+*.AppImage
+*.tar.gz
+*.zip
+
+# Keep documentation assets
+!Assets/**
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini

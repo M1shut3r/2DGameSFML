@@ -1,0 +1,11 @@
+* text=auto eol=lf
+
+*.png binary
+*.gif binary
+*.ogg binary
+*.ttf binary
+*.TTF binary
+*.dll binary
+*.exe binary
+*.pdb binary
+*.ilk binary

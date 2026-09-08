@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  linux:
+    name: Linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential cmake g++ make \
+            libsfml-dev libopenal-dev \
+            patchelf pkg-config
+
+      - name: Configure
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --config Release --parallel
+
+      - name: Package
+        env:
+          MAKE_APPIMAGE: "0"
+        run: |
+          chmod +x scripts/package-linux.sh
+          ./scripts/package-linux.sh build dist "${{ github.sha }}"
+
+      - name: Upload Linux artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: 2DGameSFML-linux-x86_64
+          path: dist/2DGameSFML-linux-x86_64.tar.gz
+          if-no-files-found: error
+
+  windows:
+    name: Windows
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download SFML
+        shell: pwsh
+        run: |
+          $url = "https://github.com/SFML/SFML/releases/download/2.6.2/SFML-2.6.2-windows-vc17-64-bit.zip"
+          Invoke-WebRequest -Uri $url -OutFile sfml.zip
+          Expand-Archive sfml.zip -DestinationPath .
+          Get-ChildItem SFML-2.6.2 | Select-Object Name
+
+      - name: Configure
+        run: cmake -S . -B build -A x64 -DCMAKE_PREFIX_PATH="${{ github.workspace }}/SFML-2.6.2"
+
+      - name: Build
+        run: cmake --build build --config Release --parallel
+
+      - name: Package
+        shell: pwsh
+        run: |
+          ./scripts/package-windows.ps1 -BuildDir build -DistDir dist -SfmlBin "${{ github.workspace }}/SFML-2.6.2/bin"
+
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: 2DGameSFML-windows-x64
+          path: dist/2DGameSFML-windows-x64.zip
+          if-no-files-found: error

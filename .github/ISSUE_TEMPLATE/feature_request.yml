@@ -1,0 +1,27 @@
+name: Feature request
+description: Предложить механику, уровень или улучшение сборки
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: Кратко опишите идею и зачем она нужна в игре.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Какую задачу это решает
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Предлагаемое решение
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Альтернативы
+      description: Что ещё рассматривали
+    validations:
+      required: false
