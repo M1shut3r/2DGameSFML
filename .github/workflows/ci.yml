@@ -83,13 +83,17 @@ jobs:
 
   windows-release:
     name: Windows portable build
-    runs-on: windows-latest
+    # Pin VS 2022: windows-latest currently ships VS 2026, and the VS 2022 generator is gone there.
+    runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
       - name: Configure
         run: |
-          cmake -S . -B build -G "Visual Studio 17 2022" -A x64 `
+          cmake -S . -B build -A x64 `
             -DBUILD_TESTING=ON `
             -DWARNINGS_AS_ERRORS=ON `
             -DGAME_FETCH_SFML=ON `
