@@ -126,7 +126,7 @@ jobs:
             Готовые сборки — Visual Studio ставить не нужно.
 
             **Windows:** скачайте `2DGameSFML-windows-x64.zip`, распакуйте и запустите `2DGameSFML.exe`.
-            **Linux:** скачайте AppImage или архив `.tar.gz` и запустите игру.
+            **Linux:** скачайте `2DGameSFML-linux-x86_64.tar.gz` (или AppImage, если он есть в релизе) и запустите игру.
 
             - Left click — направить мяч
             - Серый квадрат — цель уровня

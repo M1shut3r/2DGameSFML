@@ -6,6 +6,10 @@ BUILD_DIR="${1:-$ROOT/build}"
 DIST_ROOT="${2:-$ROOT/dist}"
 VERSION="${3:-1.0.0}"
 
+mkdir -p "$BUILD_DIR" "$DIST_ROOT"
+BUILD_DIR="$(cd "$BUILD_DIR" && pwd)"
+DIST_ROOT="$(cd "$DIST_ROOT" && pwd)"
+
 BIN="$(find "$BUILD_DIR" -type f -name 2DGameSFML -executable | head -n 1)"
 if [[ -z "$BIN" ]]; then
     echo "Could not find 2DGameSFML binary under $BUILD_DIR" >&2
@@ -88,7 +92,7 @@ if [[ "${MAKE_APPIMAGE:-1}" == "1" ]]; then
     if [[ -z "$LINUXDEPLOY" ]]; then
         LINUXDEPLOY="$DIST_ROOT/linuxdeploy-x86_64.AppImage"
         if [[ ! -x "$LINUXDEPLOY" ]]; then
-            curl -L --fail -o "$LINUXDEPLOY" \
+            curl -L --fail --retry 5 --retry-delay 2 -o "$LINUXDEPLOY" \
                 https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
             chmod +x "$LINUXDEPLOY"
         fi
@@ -99,7 +103,7 @@ if [[ "${MAKE_APPIMAGE:-1}" == "1" ]]; then
     set +e
     (
         cd "$DIST_ROOT"
-        "$LINUXDEPLOY" --appdir "$APPDIR" --output appimage
+        "$LINUXDEPLOY" --appimage-extract-and-run --appdir "$APPDIR" --output appimage
         APPIMAGE_FILE="$(ls -1 2D_Game_SFML*.AppImage 2DGameSFML*.AppImage 2dgame-sfml*.AppImage 2>/dev/null | head -n 1 || true)"
         if [[ -n "${APPIMAGE_FILE:-}" && "$APPIMAGE_FILE" != "2DGameSFML-linux-x86_64.AppImage" ]]; then
             mv "$APPIMAGE_FILE" "2DGameSFML-linux-x86_64.AppImage"
