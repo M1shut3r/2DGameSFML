@@ -123,13 +123,13 @@ jobs:
           generate_release_notes: true
           files: release/*
           body: |
-            Готовые сборки — Visual Studio ставить не нужно.
+            Ready-to-play builds. Visual Studio is not required.
 
-            **Windows:** скачайте `2DGameSFML-windows-x64.zip`, распакуйте и запустите `2DGameSFML.exe`.
-            **Linux:** скачайте `2DGameSFML-linux-x86_64.tar.gz` (или AppImage, если он есть в релизе) и запустите игру.
+            **Windows:** download `2DGameSFML-windows-x64.zip`, extract it, and run `2DGameSFML.exe`.
+            **Linux:** download `2DGameSFML-linux-x86_64.tar.gz` or the AppImage, then launch the game.
 
-            - Left click — направить мяч
-            - Серый квадрат — цель уровня
-            - Иконки слева сверху — звук, следующий трек, сброс
+            - Left click aims the ball
+            - The gray square is the goal
+            - Top-left icons: mute, next track, reset
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
