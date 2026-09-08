@@ -1,0 +1,16 @@
+Checks: >
+  clang-diagnostic-*,
+  clang-analyzer-*,
+  bugprone-*,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-branch-clone,
+  performance-*,
+  modernize-use-override,
+  modernize-use-nullptr,
+  readability-braces-around-statements
+WarningsAsErrors: '*'
+HeaderFilterRegex: 'src/core/.*'
+FormatStyle: file
+CheckOptions:
+  - key: readability-braces-around-statements.ShortStatementLines
+    value: '0'

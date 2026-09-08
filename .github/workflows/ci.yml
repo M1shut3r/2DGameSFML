@@ -1,0 +1,114 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Linters
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install clang-format and cppcheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-format cppcheck
+
+      - name: clang-format
+        run: |
+          mapfile -t sources < <(find src tests -type f \( -name '*.cpp' -o -name '*.h' \) | sort)
+          clang-format --dry-run --Werror "${sources[@]}"
+
+      - name: cppcheck
+        run: |
+          cppcheck \
+            --std=c++17 \
+            --language=c++ \
+            --enable=warning,style,performance,portability \
+            --inline-suppr \
+            --error-exitcode=1 \
+            --suppress=missingIncludeSystem \
+            --suppress=unusedFunction \
+            --suppress=unmatchedSuppression \
+            -I src \
+            src tests
+
+  linux-test:
+    name: Linux tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build g++ libsfml-dev
+
+      - name: Configure
+        run: |
+          cmake -S . -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DBUILD_TESTING=ON \
+            -DWARNINGS_AS_ERRORS=ON \
+            -DGAME_FETCH_SFML=OFF
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Test
+        run: ctest --test-dir build --output-on-failure
+
+      - name: clang-tidy
+        run: |
+          sudo apt-get install -y clang-tidy
+          mapfile -t includes < <(g++ -E -x c++ /dev/null -v 2>&1 | awk '/include <...> search starts here/{f=1;next} /End of search list/{f=0} f{print $1}')
+          extra=()
+          for dir in "${includes[@]}"; do
+            extra+=("--extra-arg=-isystem${dir}")
+          done
+          clang-tidy -p build \
+            "${extra[@]}" \
+            --warnings-as-errors='*' \
+            src/core/Player.cpp \
+            src/core/MapData.cpp \
+            src/core/Collision.cpp \
+            src/core/GameLogic.cpp \
+            src/core/Paths.cpp
+
+  windows-release:
+    name: Windows portable build
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure
+        run: |
+          cmake -S . -B build -G "Visual Studio 17 2022" -A x64 `
+            -DBUILD_TESTING=ON `
+            -DWARNINGS_AS_ERRORS=ON `
+            -DGAME_FETCH_SFML=ON `
+            -DBUILD_SHARED_LIBS=OFF
+
+      - name: Build
+        run: cmake --build build --config Release --parallel
+
+      - name: Test
+        run: ctest --test-dir build -C Release --output-on-failure
+
+      - name: Package
+        run: |
+          cmake --install build --config Release --prefix package
+          cmake -E tar cf 2DGameSFML-windows-x64.zip --format=zip package
+
+      - name: Upload portable Windows build
+        uses: actions/upload-artifact@v4
+        with:
+          name: 2DGameSFML-windows-x64
+          path: 2DGameSFML-windows-x64.zip
+          if-no-files-found: error
