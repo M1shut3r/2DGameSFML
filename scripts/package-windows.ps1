@@ -39,34 +39,67 @@ foreach ($asset in $assets) {
     Copy-Item (Join-Path $root "Game1.0\$asset") $stage
 }
 
-$dllSources = @()
-$dllSources += Get-ChildItem -Path $exe.DirectoryName -Filter "sfml-*.dll" -ErrorAction SilentlyContinue
+$neededSfml = @(
+    "sfml-graphics-2.dll",
+    "sfml-window-2.dll",
+    "sfml-system-2.dll",
+    "sfml-audio-2.dll",
+    "openal32.dll"
+)
+$searchDirs = @($exe.DirectoryName)
 if ($SfmlBin -and (Test-Path $SfmlBin)) {
-    $dllSources += Get-ChildItem -Path $SfmlBin -Filter "sfml-*.dll"
-    $openal = Join-Path $SfmlBin "openal32.dll"
-    if (Test-Path $openal) {
-        Copy-Item $openal $stage
-    }
+    $searchDirs += $SfmlBin
 }
-foreach ($dll in ($dllSources | Sort-Object FullName -Unique)) {
-    if ($dll.Name -match "-d-") {
-        continue
+foreach ($name in $neededSfml) {
+    $found = $null
+    foreach ($dir in $searchDirs) {
+        $candidate = Join-Path $dir $name
+        if (Test-Path $candidate) {
+            $found = $candidate
+            break
+        }
     }
-    Copy-Item $dll.FullName $stage
+    if (-not $found) {
+        throw "Missing required DLL: $name"
+    }
+    Copy-Item $found $stage
 }
 
-$vsEditions = Get-ChildItem "${env:ProgramFiles}\Microsoft Visual Studio\2022" -Directory -ErrorAction SilentlyContinue
-foreach ($edition in $vsEditions) {
-    $msvc = Join-Path $edition.FullName "VC\Redist\MSVC"
-    if (-not (Test-Path $msvc)) {
-        continue
+$crtCopied = $false
+$vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+if (Test-Path $vswhere) {
+    $crtDirs = & $vswhere -latest -products * -find "VC\Redist\MSVC\*\x64\Microsoft.VC*.CRT" 2>$null
+    foreach ($crt in $crtDirs) {
+        if ($crt -and (Test-Path $crt)) {
+            Copy-Item (Join-Path $crt "*.dll") $stage
+            Write-Host "Copied VC++ runtime from $crt"
+            $crtCopied = $true
+            break
+        }
     }
-    $ver = Get-ChildItem $msvc -Directory | Sort-Object Name -Descending | Select-Object -First 1
-    $crt = Get-ChildItem (Join-Path $ver.FullName "x64") -Directory -Filter "Microsoft.VC*.CRT" -ErrorAction SilentlyContinue | Select-Object -First 1
-    if ($crt) {
-        Copy-Item (Join-Path $crt.FullName "*.dll") $stage
-        break
+}
+if (-not $crtCopied) {
+    $sys = Join-Path $env:SystemRoot "System32"
+    $runtime = @(
+        "vcruntime140.dll",
+        "vcruntime140_1.dll",
+        "msvcp140.dll",
+        "msvcp140_1.dll",
+        "msvcp140_2.dll"
+    )
+    foreach ($name in $runtime) {
+        $src = Join-Path $sys $name
+        if (Test-Path $src) {
+            Copy-Item $src $stage
+            $crtCopied = $true
+        }
     }
+    if ($crtCopied) {
+        Write-Host "Copied VC++ runtime from $sys"
+    }
+}
+if (-not $crtCopied) {
+    throw "Could not locate the Visual C++ runtime DLLs"
 }
 
 New-Item -ItemType Directory -Force -Path $DistDir | Out-Null
@@ -76,3 +109,4 @@ if (Test-Path $zip) {
 }
 Compress-Archive -Path (Join-Path $stage "*") -DestinationPath $zip
 Write-Host "Windows package: $zip"
+Get-ChildItem $stage | ForEach-Object { Write-Host ("  {0}" -f $_.Name) }
